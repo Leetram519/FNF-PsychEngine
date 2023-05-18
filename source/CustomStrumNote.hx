@@ -1,5 +1,7 @@
 package;
 
+import sys.io.File;
+import haxe.Json;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -59,7 +61,7 @@ class CustomStrumNote extends FlxSprite
 		this.noteData = leData;
 		super(x, y);
 
-		this.visible = !strumFile.hideNote;
+		this.alpha = strumFile.hideNote ? 0.0001 : 0.8;
 
 		texture = 'NOTE_assets'; //Load texture and anims
 
@@ -77,7 +79,7 @@ class CustomStrumNote extends FlxSprite
 			antialiasing = ClientPrefs.globalAntialiasing;
 			setGraphicSize(Std.int(width * 0.7));
 
-			switch (strumFile.noteKey[0])
+			switch (this.strumFile.noteKey[0])
 			{
 				case "NOTE_LEFT":
 					animation.addByPrefix('static', 'arrowLEFT');
@@ -160,14 +162,20 @@ class CustomStrumNote extends FlxSprite
 			for (file in FileSystem.readDirectory(gamingPath)){
 				var gayPath = haxe.io.Path.join([gamingPath, file]);
 
-				if (!FileSystem.isDirectory(gayPath)){
-					if (Highscore.formatSong(file, 1) == Highscore.formatSong(query+".ArrowJson",1)){
-						ret = path;
-						return ret;
+				try{
+					var rawJson:String = File.getContent(gayPath);
+
+					var loadedStrum:RhythmStrum = cast Json.parse(rawJson);
+					if(loadedStrum.strumName != null && loadedStrum.noteKey != null){
+
+						trace("Successfully loaded Strum: " + loadedStrum.strumName);
+						return loadedStrum;
 					}
+				} catch(err){
+					trace(err);
 				}
 			}
 		}
-		return ret;
+		return null;
 	}
 }

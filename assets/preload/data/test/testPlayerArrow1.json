@@ -1,0 +1,12 @@
+{
+	"animationToPlay": "singLEFT",
+	"hideNote": true,
+	"multipleKeys": "",
+	"strumName": "testPlayerArrow1",
+	"mustHit": true,
+	"soundEffect": "",
+	"noteKey": [
+		"NOTE_UP"
+	],
+	"scoreAdded": 250
+}

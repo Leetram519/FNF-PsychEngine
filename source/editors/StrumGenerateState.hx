@@ -1,4 +1,4 @@
-package;
+package editors;
 
 import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.addons.ui.FlxUIButton;

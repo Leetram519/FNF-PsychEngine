@@ -1,6 +1,5 @@
 package editors;
 
-import StrumGeneration.StrumGenerateState;
 #if desktop
 import Discord.DiscordClient;
 #end

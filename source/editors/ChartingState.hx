@@ -46,6 +46,7 @@ import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.utils.ByteArray;
+import CustomStrumNote;
 
 using StringTools;
 #if sys
@@ -112,7 +113,7 @@ class ChartingState extends MusicBeatState
 	var camPos:FlxObject;
 	var strumLine:FlxSprite;
 	var quant:AttachedSprite;
-	var strumLineNotes:FlxTypedGroup<StrumNote>;
+	var strumLineNotes:FlxTypedGroup<CustomStrumNote>;
 	var curSong:String = 'Test';
 	var amountSteps:Int = 0;
 	var bullshitUI:FlxGroup;
@@ -197,6 +198,9 @@ class ChartingState extends MusicBeatState
 		192
 	];
 
+	var strumList:Array<RhythmStrum> = [];
+	var playerStrumList:Array<RhythmStrum> = [];
+	var enemyStrumList:Array<RhythmStrum> = [];
 
 
 	var text:String = "";
@@ -227,6 +231,32 @@ class ChartingState extends MusicBeatState
 			};
 			addSection();
 			PlayState.SONG = _song;
+		}
+
+		//List all the strums lol
+
+		if (FileSystem.exists("assets/data/"+_song.song)){
+			for (file in FileSystem.readDirectory("assets/data/"+_song.song)){
+				var gayPath = haxe.io.Path.join([("assets/data/"+_song.song+"/"), file]);
+
+				try{
+					var rawJson:String = File.getContent(gayPath);
+
+					var loadedStrum:RhythmStrum = cast Json.parse(rawJson);
+					if(loadedStrum.strumName != null && loadedStrum.noteKey != null){
+						trace("Successfully found Strum: " + loadedStrum.strumName);
+
+						if (loadedStrum.mustHit){
+							playerStrumList.push(loadedStrum);
+						} else {
+							enemyStrumList.push(loadedStrum);
+						}
+						strumList.push(loadedStrum);
+					}
+				} catch(err){
+					trace(err);
+				}
+			}
 		}
 
 		// Paths.clearMemory();
@@ -306,9 +336,9 @@ class ChartingState extends MusicBeatState
 		quant.yAdd = 8;
 		add(quant);
 
-		strumLineNotes = new FlxTypedGroup<StrumNote>();
-		for (i in 0...8){
-			var note:StrumNote = new StrumNote(GRID_SIZE * (i+1), strumLine.y, i % 4, 0);
+		strumLineNotes = new FlxTypedGroup<CustomStrumNote>();
+		for (i in 0...strumList.length){
+			var note:CustomStrumNote = new CustomStrumNote(GRID_SIZE * (i+1), strumLine.y, i % 4, strumList[i]);
 			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 			note.updateHitbox();
 			note.playAnim('static', true);
@@ -348,7 +378,7 @@ class ChartingState extends MusicBeatState
 		\nHold Shift to move 4x faster
 		\nHold Control and click on an arrow to select it
 		\nZ/X - Zoom in/out
-		\n
+		\nMake sure all your custom notes are in the data folder BEFORE charting!
 		\nEsc - Test your chart inside Chart Editor
 		\nEnter - Play your chart
 		\nQ/E - Decrease/Increase Note Sustain Length
@@ -1544,7 +1574,7 @@ class ChartingState extends MusicBeatState
 		_song.song = UI_songTitle.text;
 
 		strumLineUpdateY();
-		for (i in 0...8){
+		for (i in 0...strumList.length){
 			strumLineNotes.members[i].y = strumLine.y;
 		}
 
@@ -1969,7 +1999,7 @@ class ChartingState extends MusicBeatState
 		Conductor.songPosition = FlxG.sound.music.time;
 		strumLineUpdateY();
 		camPos.y = strumLine.y;
-		for (i in 0...8){
+		for (i in 0...strumList.length){
 			strumLineNotes.members[i].y = strumLine.y;
 			strumLineNotes.members[i].alpha = FlxG.sound.music.playing ? 1 : 0.35;
 		}

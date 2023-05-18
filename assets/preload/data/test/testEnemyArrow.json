@@ -1,0 +1,12 @@
+{
+	"animationToPlay": "singLEFT",
+	"hideNote": true,
+	"multipleKeys": "",
+	"strumName": "testEnemyArrow",
+	"mustHit": false,
+	"soundEffect": "",
+	"noteKey": [
+		"NOTE_LEFT"
+	],
+	"scoreAdded": 100
+}

@@ -1,0 +1,11 @@
+{
+	"animationToPlay": "singDOWN",
+	"hideNote": true,
+	"multipleKeys": false,
+	"strumName": "funny note lmao",
+	"soundEffect": "",
+	"noteKey": [
+		"NOTE_UP"
+	],
+	"scoreAdded": 260
+}

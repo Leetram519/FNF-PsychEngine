@@ -1,0 +1,11 @@
+{
+	"animationToPlay": "singLEFT",
+	"hideNote": true,
+	"multipleKeys": false,
+	"strumName": "Not assigned!",
+	"soundEffect": "",
+	"noteKey": [
+		"NOTE_UP"
+	],
+	"scoreAdded": 100
+}
