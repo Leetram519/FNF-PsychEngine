@@ -53,10 +53,11 @@ typedef RhythmStrum =
 	var noteKey:Array<String>;
     var animationToPlay:String;
     var soundEffect:String;
-    var multipleKeys:Bool;
+    var multipleKeys:String;
     var hideNote:Bool;
     var scoreAdded:Int;
     var strumName:String;
+    var mustHit:Bool;
 }
 
 class StrumGenerateState extends MusicBeatState{
@@ -75,18 +76,21 @@ class StrumGenerateState extends MusicBeatState{
     var hideNoteBox:FlxUICheckBox;
     var scoreAddedBox:FlxUIInputText;
     var strumNameBox:FlxUIInputText;
+    var mustHitCheck:FlxUICheckBox;
 
 	var blockPressWhileTypingOn:Array<FlxUIInputText> = [];
     var strumFile:RhythmStrum;
+    public static var loadedStrum:RhythmStrum;
 
     // Json variables
 	var noteKey:Array<String>;
     var animationToPlay:String;
     var soundEffect:String;
-    var multipleKeys:Bool;
+    var multipleKeys:String;
     var hideNote:Bool;
     var scoreAdded:Int;
     var strumName:String;
+    var mustHit:Bool;
 
     var keys:Array<String> = [
         "NOTE_LEFT",
@@ -101,10 +105,11 @@ class StrumGenerateState extends MusicBeatState{
             noteKey: ["NOTE_LEFT"],
             animationToPlay: "singLEFT",
             soundEffect:"",
-            multipleKeys: false,
+            multipleKeys: "",
             hideNote: true,
             scoreAdded: 100,
-            strumName: "Not assigned!"
+            strumName: "Not assigned!",
+            mustHit: true,
         };
 
         return strumFile;
@@ -143,30 +148,41 @@ class StrumGenerateState extends MusicBeatState{
         var strumName:String;
         */
 
+        noteKeyBox.selectedLabel = strumFile.noteKey[0];
         animationToPlayBox.text = strumFile.animationToPlay;
         soundEffectBox.text = strumFile.soundEffect;
+        multipleKeysBox.text = strumFile.multipleKeys;
+        hideNoteBox.checked = strumFile.hideNote;
         scoreAddedBox.text = Std.string(strumFile.scoreAdded);
         strumNameBox.text = strumFile.strumName;
+        mustHitCheck.checked = strumFile.mustHit;
     }
 
     function makeEditor(){
         noteKeyBox = new FlxUIDropDownMenu(0, 20, FlxUIDropDownMenu.makeStrIdLabelArray(keys, false), function(control:String){
             strumFile.noteKey = [control];
         });
-        noteKeyBox.x = 0;
+        noteKeyBox.x = 30;
         noteKeyBox.y = 20;
         noteKeyBox.selectedLabel = strumFile.noteKey[0];
-        animationToPlayBox = new FlxUIInputText(0, 80, 300, null, 16, FlxColor.BLACK, FlxColor.GRAY);
-        soundEffectBox = new FlxUIInputText(0, 140, 300, null, 16, FlxColor.BLACK, FlxColor.GRAY);
-        multipleKeysBox = new FlxUIInputText(0, 200, 300, null, 16, FlxColor.BLACK, FlxColor.GRAY);
-        hideNoteBox = new FlxUICheckBox(0, 260, null, null, "", 100);
-        scoreAddedBox = new FlxUIInputText(0, 320, 300, null, 16, FlxColor.BLACK, FlxColor.GRAY);
-        strumNameBox = new FlxUIInputText(0, 380, 300, null, 16, FlxColor.BLACK, FlxColor.GRAY);
-        saveButton = new FlxUIButton(0, 440, "Save", function() {
+        animationToPlayBox = new FlxUIInputText(30, 80, 300, null, 16, FlxColor.BLACK, FlxColor.GRAY);
+        soundEffectBox = new FlxUIInputText(30, 140, 300, null, 16, FlxColor.BLACK, FlxColor.GRAY);
+        multipleKeysBox = new FlxUIInputText(30, 200, 300, null, 16, FlxColor.BLACK, FlxColor.GRAY);
+        hideNoteBox = new FlxUICheckBox(30, 260, null, null, "Hide note ?", 100, null, function()
+            {
+                strumFile.hideNote = hideNoteBox.checked;
+            });
+        scoreAddedBox = new FlxUIInputText(30, 320, 300, null, 16, FlxColor.BLACK, FlxColor.GRAY);
+        strumNameBox = new FlxUIInputText(30, 380, 300, null, 16, FlxColor.BLACK, FlxColor.GRAY);
+        mustHitCheck = new FlxUICheckBox(200, 260, null, null, "Must Hit ?", 100, null, function()
+            {
+                strumFile.mustHit = mustHitCheck.checked;
+            });
+        saveButton = new FlxUIButton(30, 440, "Save", function() {
 			saveJsonFile();
 		}, true, false, FlxColor.WHITE);
 
-        loadButton = new FlxUIButton(0, 500, "Load", function() {
+        loadButton = new FlxUIButton(30, 500, "Load", function() {
 			loadJsonFile();
 		}, true, false, FlxColor.WHITE);
 
@@ -174,7 +190,6 @@ class StrumGenerateState extends MusicBeatState{
         infoTexts.add(new FlxText(animationToPlayBox.x, animationToPlayBox.y - 18, 0, 'Animation to play on Hit:'));
 		infoTexts.add(new FlxText(soundEffectBox.x, soundEffectBox.y - 18, 0, 'Sound effect to play on Hit:'));
 		infoTexts.add(new FlxText(multipleKeysBox.x, multipleKeysBox.y - 18, 0, 'Additionnal Keys ? If yes, add their name here (noteLEFT, noteRIGHT...)'));
-		infoTexts.add(new FlxText(hideNoteBox.x, hideNoteBox.y - 18, 0, 'Hide note ?'));
 		infoTexts.add(new FlxText(scoreAddedBox.x, scoreAddedBox.y - 18, 0, 'Score to add on hit:'));
 		infoTexts.add(new FlxText(strumNameBox.x, strumNameBox.y - 18, 0, 'Name of the arrow:'));
         
@@ -187,6 +202,7 @@ class StrumGenerateState extends MusicBeatState{
         boxes.add(saveButton);
         boxes.add(loadButton);
         boxes.add(noteKeyBox);
+        boxes.add(mustHitCheck);
 
         boxes.forEach(function (i:Dynamic){
 		    blockPressWhileTypingOn.push(i);
@@ -197,6 +213,18 @@ class StrumGenerateState extends MusicBeatState{
     }
 
     override function update(elapsed){
+        if(loadedStrum != null) {
+			strumFile = loadedStrum;
+			loadedStrum = null;
+
+			reloadAllShit();
+		}
+
+        if(FlxG.keys.justPressed.ESCAPE) {
+            MusicBeatState.switchState(new editors.MasterEditorMenu());
+            FlxG.sound.playMusic(Paths.music('freakyMenu'));
+        }
+
         super.update(elapsed);
     }
 
@@ -210,6 +238,8 @@ class StrumGenerateState extends MusicBeatState{
                 strumFile.scoreAdded = Std.parseInt(scoreAddedBox.text.trim());
             } else if(sender == strumNameBox){
                 strumFile.strumName = strumNameBox.text.trim();
+            } else if(sender == multipleKeysBox){
+                strumFile.multipleKeys = multipleKeysBox.text.trim();
             }
 		}
 	}
@@ -272,7 +302,8 @@ class StrumGenerateState extends MusicBeatState{
 			"multipleKeys": strumFile.multipleKeys,
 			"scoreAdded": strumFile.scoreAdded,
 			"hideNote":	strumFile.hideNote,
-            "strumName": strumFile.strumName
+            "strumName": strumFile.strumName,
+            "mustHit": strumFile.mustHit
 		};
 
         var data:String = Json.stringify(json, "\t");
@@ -315,8 +346,17 @@ class StrumGenerateState extends MusicBeatState{
 			var rawJson:String = File.getContent(fullPath);
 			if(rawJson != null) {
                 // Gaming
+                loadedStrum = cast Json.parse(rawJson);
+                if(loadedStrum.strumName != null && loadedStrum.noteKey != null){
+                    var cutName:String = _file.name.substr(0, _file.name.length - 5);
 
-				return;
+                    trace("Successfully loaded file: " + cutName);
+                    loadError = false;
+
+                    _file = null;
+                    return;
+                }
+
 			}
 		}
 		loadError = true;
