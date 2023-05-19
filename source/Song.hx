@@ -14,6 +14,7 @@ using StringTools;
 
 typedef SwagSong =
 {
+	var rhythm:Bool;
 	var song:String;
 	var notes:Array<SwagSection>;
 	var events:Array<Dynamic>;
@@ -31,8 +32,10 @@ typedef SwagSong =
 	var validScore:Bool;
 }
 
+
 class Song
 {
+	public var rhythm:Bool;
 	public var song:String;
 	public var notes:Array<SwagSection>;
 	public var events:Array<Dynamic>;
@@ -48,6 +51,10 @@ class Song
 
 	private static function onLoadJson(songJson:Dynamic) // Convert old charts to newest format
 	{
+		if(songJson.rhythm == null){
+			songJson.rhythm = false;
+		}
+
 		if(songJson.gfVersion == null)
 		{
 			songJson.gfVersion = songJson.player3;
@@ -79,8 +86,9 @@ class Song
 		}
 	}
 
-	public function new(song, notes, bpm)
+	public function new(song, notes, bpm, ?rhythm = false)
 	{
+		this.rhythm = rhythm;
 		this.song = song;
 		this.notes = notes;
 		this.bpm = bpm;

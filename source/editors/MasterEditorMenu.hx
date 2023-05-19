@@ -27,7 +27,8 @@ class MasterEditorMenu extends MusicBeatState
 		'Dialogue Portrait Editor',
 		'Character Editor',
 		'Chart Editor',
-		'Strum Editor'
+		'Strum Editor',
+		'Rhythm Chart Editor'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -129,6 +130,8 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
 				case 'Strum Editor':
 					LoadingState.loadAndSwitchState(new StrumGenerateState(), false);
+				case 'Rhythm Chart Editor':
+					LoadingState.loadAndSwitchState(new RhythmChartingState(), false);
 			}
 			FlxG.sound.music.volume = 0;
 			#if PRELOAD_ALL
