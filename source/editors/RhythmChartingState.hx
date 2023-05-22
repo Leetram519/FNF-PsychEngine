@@ -822,19 +822,8 @@ class RhythmChartingState extends MusicBeatState
 		check_eventsSec = new FlxUICheckBox(check_notesSec.x + 100, check_notesSec.y, null, null, "Events", 100);
 		check_eventsSec.checked = true;
 
-		var swapSection:FlxButton = new FlxButton(10, check_notesSec.y + 40, "Swap section", function()
-		{
-			for (i in 0..._song.notes[curSec].sectionNotes.length)
-			{
-				var note:Array<Dynamic> = _song.notes[curSec].sectionNotes[i];
-				note[1] = (note[1] + 4) % 8;
-				_song.notes[curSec].sectionNotes[i] = note;
-			}
-			updateGrid();
-		});
-
 		var stepperCopy:FlxUINumericStepper = null;
-		var copyLastButton:FlxButton = new FlxButton(10, swapSection.y + 30, "Copy last section", function()
+		var copyLastButton:FlxButton = new FlxButton(10, clearSectionButton.y + 70, "Copy last section", function()
 		{
 			var value:Int = Std.int(stepperCopy.value);
 			if(value == 0) return;
@@ -931,7 +920,6 @@ class RhythmChartingState extends MusicBeatState
 		tab_group_section.add(clearSectionButton);
 		tab_group_section.add(check_notesSec);
 		tab_group_section.add(check_eventsSec);
-		tab_group_section.add(swapSection);
 		tab_group_section.add(stepperCopy);
 		tab_group_section.add(copyLastButton);
 		tab_group_section.add(duetButton);
@@ -1589,7 +1577,7 @@ class RhythmChartingState extends MusicBeatState
 		FlxG.watch.addQuick('daStep', curStep);
 
 
-		if (FlxG.mouse.x > gridBG.x
+		if (FlxG.mouse.x > gridBG.x + GRID_SIZE
 			&& FlxG.mouse.x < gridBG.x + gridBG.width
 			&& FlxG.mouse.y > gridBG.y
 			&& FlxG.mouse.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom])
@@ -1635,7 +1623,7 @@ class RhythmChartingState extends MusicBeatState
 			}
 			else
 			{
-				if (FlxG.mouse.x > gridBG.x
+				if (FlxG.mouse.x > gridBG.x + GRID_SIZE
 					&& FlxG.mouse.x < gridBG.x + gridBG.width
 					&& FlxG.mouse.y > gridBG.y
 					&& FlxG.mouse.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom])
@@ -2050,7 +2038,16 @@ class RhythmChartingState extends MusicBeatState
 					if(!playedSound[data]) {
 						if((playSoundBf.checked && note.mustPress) || (playSoundDad.checked && !note.mustPress)){
 							var soundToPlay = 'hitsound';
-							FlxG.sound.play(Paths.sound(soundToPlay)).pan = note.noteData < 4? -0.3 : 0.3; //would be coolio
+							for (i in 0...strumList.length){
+								if(i == note.noteData){
+									if(strumList[i].soundEffect != null || strumList[i].soundEffect != ""){
+										soundToPlay = strumList[i].soundEffect;
+									}
+								}
+							}
+							
+
+							FlxG.sound.play(Paths.sound(soundToPlay)); //would be coolio
 							playedSound[data] = true;
 						}
 
@@ -2651,6 +2648,25 @@ class RhythmChartingState extends MusicBeatState
 			note.noteType = i[3];
 		}
 
+		var animToPlay:String ='purple';
+		switch (daNoteInfo % (note.mustPress ? playerStrumList.length : enemyStrumList.length))
+		{
+			case 0:
+				animToPlay = 'purple';
+			case 1:
+				animToPlay = 'blue';
+			case 2:
+				animToPlay = 'green';
+			case 3:
+				animToPlay = 'red';
+			default:
+				animToPlay = 'red';
+		}
+
+		for (i in 0...strumList.length){
+
+		}
+
 		note.setGraphicSize(GRID_SIZE, GRID_SIZE);
 		note.updateHitbox();
 		note.x = Math.floor(daNoteInfo * GRID_SIZE) + GRID_SIZE;
@@ -2820,11 +2836,6 @@ class RhythmChartingState extends MusicBeatState
 		{
 			_song.notes[curSec].sectionNotes.push([noteStrum, noteData, noteSus, noteTypeIntMap.get(daType)]);
 			curSelectedNote = _song.notes[curSec].sectionNotes[_song.notes[curSec].sectionNotes.length - 1];
-		}
-
-		if (FlxG.keys.pressed.CONTROL && noteData > -1)
-		{
-			_song.notes[curSec].sectionNotes.push([noteStrum, (noteData + 4) % 8, noteSus, noteTypeIntMap.get(daType)]);
 		}
 
 		//trace(noteData + ', ' + noteStrum + ', ' + curSec);

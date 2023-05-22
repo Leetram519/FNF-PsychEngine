@@ -95,6 +95,8 @@ class Note extends FlxSprite
 
 	public var hitsoundDisabled:Bool = false;
 
+	public var rhythmNote:Bool = false;
+
 	private function set_multSpeed(value:Float):Float {
 		resizeByRatio(value / multSpeed);
 		multSpeed = value;

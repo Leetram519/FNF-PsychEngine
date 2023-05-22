@@ -93,16 +93,14 @@ class StrumGenerateState extends MusicBeatState{
     var mustHit:Bool;
 
     var keys:Array<String> = [
-        "NOTE_LEFT",
-        "NOTE_DOWN",
-        "NOTE_UP",
-        "NOTE_RIGHT"
+        "BUTTON1",
+        "BUTTON2"
     ];
 
     function makeStrumFile():RhythmStrum{
 
         var strumFile:RhythmStrum = {
-            noteKey: ["NOTE_LEFT"],
+            noteKey: ["BUTTON1"],
             animationToPlay: "singLEFT",
             soundEffect:"",
             multipleKeys: "",
@@ -246,14 +244,10 @@ class StrumGenerateState extends MusicBeatState{
 
     private function translateStringToControl(control:String){
         switch(control){
-            case "NOTE_LEFT":
-                return Controls.Control.NOTE_LEFT;
-            case "NOTE_DOWN":
-                return Controls.Control.NOTE_DOWN;
-            case "NOTE_UP":
-                return Controls.Control.NOTE_DOWN;
-            case "NOTE_RIGHT":
-                return Controls.Control.NOTE_DOWN;
+            case "BUTTON1":
+                return Controls.Control.BUTTON1;
+            case "BUTTON2":
+                return Controls.Control.BUTTON2;
             default:
                 return null;
         }

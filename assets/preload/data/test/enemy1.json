@@ -2,11 +2,11 @@
 	"animationToPlay": "singLEFT",
 	"hideNote": true,
 	"multipleKeys": "",
-	"strumName": "testPlayerArrow1",
-	"mustHit": true,
+	"strumName": "enemy1",
+	"mustHit": false,
 	"soundEffect": "",
 	"noteKey": [
-		"NOTE_UP"
+		"BUTTON1"
 	],
-	"scoreAdded": 250
+	"scoreAdded": 100
 }

@@ -1,0 +1,12 @@
+{
+	"animationToPlay": "singLEFT",
+	"hideNote": false,
+	"multipleKeys": "",
+	"strumName": "one",
+	"mustHit": true,
+	"soundEffect": "twack",
+	"noteKey": [
+		"BUTTON1"
+	],
+	"scoreAdded": 100
+}

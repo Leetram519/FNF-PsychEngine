@@ -11,7 +11,6 @@ import flixel.input.gamepad.FlxGamepadButton;
 import flixel.input.gamepad.FlxGamepadInputID;
 import flixel.input.keyboard.FlxKey;
 
-#if (haxe >= "4.0.0")
 enum abstract Action(String) to String from String
 {
 	var UI_UP = "ui_up";
@@ -30,53 +29,25 @@ enum abstract Action(String) to String from String
 	var NOTE_LEFT = "note_left";
 	var NOTE_RIGHT = "note_right";
 	var NOTE_DOWN = "note_down";
+	var BUTTON1 = "button1";
+	var BUTTON2 = "button2";
 	var NOTE_UP_P = "note_up-press";
 	var NOTE_LEFT_P = "note_left-press";
 	var NOTE_RIGHT_P = "note_right-press";
 	var NOTE_DOWN_P = "note_down-press";
+	var BUTTON1_P = "button1-press";
+	var BUTTON2_P = "button2-press";
 	var NOTE_UP_R = "note_up-release";
 	var NOTE_LEFT_R = "note_left-release";
 	var NOTE_RIGHT_R = "note_right-release";
 	var NOTE_DOWN_R = "note_down-release";
+	var BUTTON1_R = "button1-release";
+	var BUTTON2_R = "button2-release";
 	var ACCEPT = "accept";
 	var BACK = "back";
 	var PAUSE = "pause";
 	var RESET = "reset";
 }
-#else
-@:enum
-abstract Action(String) to String from String
-{
-	var UI_UP = "ui_up";
-	var UI_LEFT = "ui_left";
-	var UI_RIGHT = "ui_right";
-	var UI_DOWN = "ui_down";
-	var UI_UP_P = "ui_up-press";
-	var UI_LEFT_P = "ui_left-press";
-	var UI_RIGHT_P = "ui_right-press";
-	var UI_DOWN_P = "ui_down-press";
-	var UI_UP_R = "ui_up-release";
-	var UI_LEFT_R = "ui_left-release";
-	var UI_RIGHT_R = "ui_right-release";
-	var UI_DOWN_R = "ui_down-release";
-	var NOTE_UP = "note_up";
-	var NOTE_LEFT = "note_left";
-	var NOTE_RIGHT = "note_right";
-	var NOTE_DOWN = "note_down";
-	var NOTE_UP_P = "note_up-press";
-	var NOTE_LEFT_P = "note_left-press";
-	var NOTE_RIGHT_P = "note_right-press";
-	var NOTE_DOWN_P = "note_down-press";
-	var NOTE_UP_R = "note_up-release";
-	var NOTE_LEFT_R = "note_left-release";
-	var NOTE_RIGHT_R = "note_right-release";
-	var NOTE_DOWN_R = "note_down-release";
-	var ACCEPT = "accept";
-	var BACK = "back";
-	var PAUSE = "pause";
-	var RESET = "reset";
-}
-#end
 
 enum Device
 {
@@ -99,6 +70,8 @@ enum Control
 	NOTE_LEFT;
 	NOTE_RIGHT;
 	NOTE_DOWN;
+	BUTTON1;
+	BUTTON2;
 	RESET;
 	ACCEPT;
 	BACK;
@@ -135,14 +108,20 @@ class Controls extends FlxActionSet
 	var _note_left = new FlxActionDigital(Action.NOTE_LEFT);
 	var _note_right = new FlxActionDigital(Action.NOTE_RIGHT);
 	var _note_down = new FlxActionDigital(Action.NOTE_DOWN);
+	var _button1 = new FlxActionDigital(Action.BUTTON1);
+	var _button2 = new FlxActionDigital(Action.BUTTON2);
 	var _note_upP = new FlxActionDigital(Action.NOTE_UP_P);
 	var _note_leftP = new FlxActionDigital(Action.NOTE_LEFT_P);
 	var _note_rightP = new FlxActionDigital(Action.NOTE_RIGHT_P);
 	var _note_downP = new FlxActionDigital(Action.NOTE_DOWN_P);
+	var _button1P = new FlxActionDigital(Action.BUTTON1_P);
+	var _button2P = new FlxActionDigital(Action.BUTTON2_P);
 	var _note_upR = new FlxActionDigital(Action.NOTE_UP_R);
 	var _note_leftR = new FlxActionDigital(Action.NOTE_LEFT_R);
 	var _note_rightR = new FlxActionDigital(Action.NOTE_RIGHT_R);
 	var _note_downR = new FlxActionDigital(Action.NOTE_DOWN_R);
+	var _button1R = new FlxActionDigital(Action.BUTTON1_R);
+	var _button2R = new FlxActionDigital(Action.BUTTON2_R);
 	var _accept = new FlxActionDigital(Action.ACCEPT);
 	var _back = new FlxActionDigital(Action.BACK);
 	var _pause = new FlxActionDigital(Action.PAUSE);
@@ -237,6 +216,16 @@ class Controls extends FlxActionSet
 	inline function get_NOTE_DOWN()
 		return _note_down.check();
 
+	public var BUTTON1(get, never):Bool;
+
+	inline function get_BUTTON1()
+		return _button1.check();
+
+	public var BUTTON2(get, never):Bool;
+
+	inline function get_BUTTON2()
+		return _button2.check();
+
 	public var NOTE_UP_P(get, never):Bool;
 
 	inline function get_NOTE_UP_P()
@@ -256,6 +245,16 @@ class Controls extends FlxActionSet
 
 	inline function get_NOTE_DOWN_P()
 		return _note_downP.check();
+
+	public var BUTTON1_P(get, never):Bool;
+
+	inline function get_BUTTON1_P()
+		return _button1P.check();
+
+	public var BUTTON2_P(get, never):Bool;
+
+	inline function get_BUTTON2_P()
+		return _button2P.check();
 
 	public var NOTE_UP_R(get, never):Bool;
 
@@ -277,6 +276,16 @@ class Controls extends FlxActionSet
 	inline function get_NOTE_DOWN_R()
 		return _note_downR.check();
 
+	public var BUTTON1_R(get, never):Bool;
+
+	inline function get_BUTTON1_R()
+		return _button1R.check();
+
+	public var BUTTON2_R(get, never):Bool;
+
+	inline function get_BUTTON2_R()
+		return _button2R.check();
+
 	public var ACCEPT(get, never):Bool;
 
 	inline function get_ACCEPT()
@@ -297,7 +306,6 @@ class Controls extends FlxActionSet
 	inline function get_RESET()
 		return _reset.check();
 
-	#if (haxe >= "4.0.0")
 	public function new(name, scheme = None)
 	{
 		super(name);
@@ -318,14 +326,20 @@ class Controls extends FlxActionSet
 		add(_note_left);
 		add(_note_right);
 		add(_note_down);
+		add(_button1);
+		add(_button2);
 		add(_note_upP);
 		add(_note_leftP);
 		add(_note_rightP);
 		add(_note_downP);
+		add(_button1P);
+		add(_button2P);
 		add(_note_upR);
 		add(_note_leftR);
 		add(_note_rightR);
 		add(_note_downR);
+		add(_button1R);
+		add(_button2R);
 		add(_accept);
 		add(_back);
 		add(_pause);
@@ -336,48 +350,6 @@ class Controls extends FlxActionSet
 
 		setKeyboardScheme(scheme, false);
 	}
-	#else
-	public function new(name, scheme:KeyboardScheme = null)
-	{
-		super(name);
-
-		add(_ui_up);
-		add(_ui_left);
-		add(_ui_right);
-		add(_ui_down);
-		add(_ui_upP);
-		add(_ui_leftP);
-		add(_ui_rightP);
-		add(_ui_downP);
-		add(_ui_upR);
-		add(_ui_leftR);
-		add(_ui_rightR);
-		add(_ui_downR);
-		add(_note_up);
-		add(_note_left);
-		add(_note_right);
-		add(_note_down);
-		add(_note_upP);
-		add(_note_leftP);
-		add(_note_rightP);
-		add(_note_downP);
-		add(_note_upR);
-		add(_note_leftR);
-		add(_note_rightR);
-		add(_note_downR);
-		add(_accept);
-		add(_back);
-		add(_pause);
-		add(_reset);
-
-		for (action in digitalActions)
-			byName[action.name] = action;
-			
-		if (scheme == null)
-			scheme = None;
-		setKeyboardScheme(scheme, false);
-	}
-	#end
 
 	override function update()
 	{
@@ -422,6 +394,8 @@ class Controls extends FlxActionSet
 			case NOTE_DOWN: _note_down;
 			case NOTE_LEFT: _note_left;
 			case NOTE_RIGHT: _note_right;
+			case BUTTON1: _button1;
+			case BUTTON2: _button2;
 			case ACCEPT: _accept;
 			case BACK: _back;
 			case PAUSE: _pause;
@@ -477,6 +451,14 @@ class Controls extends FlxActionSet
 				func(_note_down, PRESSED);
 				func(_note_downP, JUST_PRESSED);
 				func(_note_downR, JUST_RELEASED);
+			case BUTTON1:
+				func(_button1, PRESSED);
+				func(_button1P, JUST_PRESSED);
+				func(_button1R, JUST_RELEASED);
+			case BUTTON2:
+				func(_button2, PRESSED);
+				func(_button2P, JUST_PRESSED);
+				func(_button2R, JUST_RELEASED);
 			case ACCEPT:
 				func(_accept, JUST_PRESSED);
 			case BACK:
@@ -636,7 +618,6 @@ class Controls extends FlxActionSet
 		keyboardScheme = scheme;
 		var keysMap = ClientPrefs.keyBinds;
 		
-		#if (haxe >= "4.0.0")
 		switch (scheme)
 		{
 			case Solo:
@@ -648,6 +629,8 @@ class Controls extends FlxActionSet
 				inline bindKeys(Control.NOTE_DOWN, keysMap.get('note_down'));
 				inline bindKeys(Control.NOTE_LEFT, keysMap.get('note_left'));
 				inline bindKeys(Control.NOTE_RIGHT, keysMap.get('note_right'));
+				inline bindKeys(Control.BUTTON1, keysMap.get('button1'));
+				inline bindKeys(Control.BUTTON2, keysMap.get('button2'));
 
 				inline bindKeys(Control.ACCEPT, keysMap.get('accept'));
 				inline bindKeys(Control.BACK, keysMap.get('back'));
@@ -662,6 +645,8 @@ class Controls extends FlxActionSet
 				inline bindKeys(Control.NOTE_DOWN, [S]);
 				inline bindKeys(Control.NOTE_LEFT, [A]);
 				inline bindKeys(Control.NOTE_RIGHT, [D]);
+				inline bindKeys(Control.BUTTON1, [G]);
+				inline bindKeys(Control.BUTTON2, [H]);
 				inline bindKeys(Control.ACCEPT, [G, Z]);
 				inline bindKeys(Control.BACK, [H, X]);
 				inline bindKeys(Control.PAUSE, [ONE]);
@@ -675,6 +660,8 @@ class Controls extends FlxActionSet
 				inline bindKeys(Control.NOTE_DOWN, [FlxKey.DOWN]);
 				inline bindKeys(Control.NOTE_LEFT, [FlxKey.LEFT]);
 				inline bindKeys(Control.NOTE_RIGHT, [FlxKey.RIGHT]);
+				inline bindKeys(Control.BUTTON1, [G]);
+				inline bindKeys(Control.BUTTON2, [H]);
 				inline bindKeys(Control.ACCEPT, [O]);
 				inline bindKeys(Control.BACK, [P]);
 				inline bindKeys(Control.PAUSE, [ENTER]);
@@ -682,52 +669,6 @@ class Controls extends FlxActionSet
 			case None: // nothing
 			case Custom: // nothing
 		}
-		#else
-		switch (scheme)
-		{
-			case Solo:
-				bindKeys(Control.UI_UP, [W, FlxKey.UP]);
-				bindKeys(Control.UI_DOWN, [S, FlxKey.DOWN]);
-				bindKeys(Control.UI_LEFT, [A, FlxKey.LEFT]);
-				bindKeys(Control.UI_RIGHT, [D, FlxKey.RIGHT]);
-				bindKeys(Control.NOTE_UP, [W, FlxKey.UP]);
-				bindKeys(Control.NOTE_DOWN, [S, FlxKey.DOWN]);
-				bindKeys(Control.NOTE_LEFT, [A, FlxKey.LEFT]);
-				bindKeys(Control.NOTE_RIGHT, [D, FlxKey.RIGHT]);
-				bindKeys(Control.ACCEPT, [Z, SPACE, ENTER]);
-				bindKeys(Control.BACK, [BACKSPACE, ESCAPE]);
-				bindKeys(Control.PAUSE, [P, ENTER, ESCAPE]);
-				bindKeys(Control.RESET, [R]);
-			case Duo(true):
-				bindKeys(Control.UI_UP, [W]);
-				bindKeys(Control.UI_DOWN, [S]);
-				bindKeys(Control.UI_LEFT, [A]);
-				bindKeys(Control.UI_RIGHT, [D]);
-				bindKeys(Control.NOTE_UP, [W]);
-				bindKeys(Control.NOTE_DOWN, [S]);
-				bindKeys(Control.NOTE_LEFT, [A]);
-				bindKeys(Control.NOTE_RIGHT, [D]);
-				bindKeys(Control.ACCEPT, [G, Z]);
-				bindKeys(Control.BACK, [H, X]);
-				bindKeys(Control.PAUSE, [ONE]);
-				bindKeys(Control.RESET, [R]);
-			case Duo(false):
-				bindKeys(Control.UI_UP, [FlxKey.UP]);
-				bindKeys(Control.UI_DOWN, [FlxKey.DOWN]);
-				bindKeys(Control.UI_LEFT, [FlxKey.LEFT]);
-				bindKeys(Control.UI_RIGHT, [FlxKey.RIGHT]);
-				bindKeys(Control.NOTE_UP, [FlxKey.UP]);
-				bindKeys(Control.NOTE_DOWN, [FlxKey.DOWN]);
-				bindKeys(Control.NOTE_LEFT, [FlxKey.LEFT]);
-				bindKeys(Control.NOTE_RIGHT, [FlxKey.RIGHT]);
-				bindKeys(Control.ACCEPT, [O]);
-				bindKeys(Control.BACK, [P]);
-				bindKeys(Control.PAUSE, [ENTER]);
-				bindKeys(Control.RESET, [BACKSPACE]);
-			case None: // nothing
-			case Custom: // nothing
-		}
-		#end
 	}
 
 	function removeKeyboard()

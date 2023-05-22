@@ -81,19 +81,11 @@ class CustomStrumNote extends FlxSprite
 
 			switch (this.strumFile.noteKey[0])
 			{
-				case "NOTE_LEFT":
+				case "BUTTON1":
 					animation.addByPrefix('static', 'arrowLEFT');
 					animation.addByPrefix('pressed', 'left press', 24, false);
 					animation.addByPrefix('confirm', 'left confirm', 24, false);
-				case "NOTE_DOWN":
-					animation.addByPrefix('static', 'arrowDOWN');
-					animation.addByPrefix('pressed', 'down press', 24, false);
-					animation.addByPrefix('confirm', 'down confirm', 24, false);
-				case "NOTE_UP":
-					animation.addByPrefix('static', 'arrowUP');
-					animation.addByPrefix('pressed', 'up press', 24, false);
-					animation.addByPrefix('confirm', 'up confirm', 24, false);
-				case "NOTE_RIGHT":
+				case "BUTTON2":
 					animation.addByPrefix('static', 'arrowRIGHT');
 					animation.addByPrefix('pressed', 'right press', 24, false);
 					animation.addByPrefix('confirm', 'right confirm', 24, false);
