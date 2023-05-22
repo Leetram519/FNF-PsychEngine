@@ -18,6 +18,7 @@ typedef RhythmStrum = {
     var scoreAdded:Int;
     var strumName:String;
 	var mustHit:Bool;
+	var soundVolume:Float;
 }
 
 class CustomStrumNote extends FlxSprite
@@ -30,6 +31,7 @@ class CustomStrumNote extends FlxSprite
     public var scoreAdded:Int;
     public var strumName:String;
 	public var mustHit:Bool;
+	public var soundVolume:Float;
 
 	private var colorSwap:ColorSwap;
 	public var resetAnim:Float = 0;

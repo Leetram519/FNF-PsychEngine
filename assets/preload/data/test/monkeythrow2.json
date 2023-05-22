@@ -2,11 +2,12 @@
 	"animationToPlay": "singLEFT",
 	"hideNote": true,
 	"multipleKeys": "",
-	"strumName": "enemy1",
+	"strumName": "monkeythrow2",
 	"mustHit": false,
-	"soundEffect": "",
+	"soundVolume": 0.4,
+	"soundEffect": "monkeythrow2",
 	"noteKey": [
 		"BUTTON1"
 	],
-	"scoreAdded": 100
+	"scoreAdded": 1000
 }

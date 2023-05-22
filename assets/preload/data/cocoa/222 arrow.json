@@ -1,0 +1,13 @@
+{
+	"animationToPlay": "singLEFT",
+	"hideNote": true,
+	"multipleKeys": "",
+	"strumName": "222 arrow",
+	"mustHit": false,
+	"soundVolume": 0.4,
+	"soundEffect": "twack-miss",
+	"noteKey": [
+		"BUTTON1"
+	],
+	"scoreAdded": 4500
+}

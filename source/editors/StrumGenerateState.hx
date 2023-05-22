@@ -1,5 +1,6 @@
 package editors;
 
+import flixel.addons.ui.FlxUISlider;
 import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUIDropDownMenu.FlxUIDropDownHeader;
@@ -58,6 +59,7 @@ typedef RhythmStrum =
     var scoreAdded:Int;
     var strumName:String;
     var mustHit:Bool;
+    var soundVolume:Float;
 }
 
 class StrumGenerateState extends MusicBeatState{
@@ -77,6 +79,7 @@ class StrumGenerateState extends MusicBeatState{
     var scoreAddedBox:FlxUIInputText;
     var strumNameBox:FlxUIInputText;
     var mustHitCheck:FlxUICheckBox;
+    var soundVolumeSlider:FlxUISlider;
 
 	var blockPressWhileTypingOn:Array<FlxUIInputText> = [];
     var strumFile:RhythmStrum;
@@ -91,6 +94,7 @@ class StrumGenerateState extends MusicBeatState{
     var scoreAdded:Int;
     var strumName:String;
     var mustHit:Bool;
+    var soundVolume:Float;
 
     var keys:Array<String> = [
         "BUTTON1",
@@ -108,6 +112,7 @@ class StrumGenerateState extends MusicBeatState{
             scoreAdded: 100,
             strumName: "Not assigned!",
             mustHit: true,
+            soundVolume: 0.4
         };
 
         return strumFile;
@@ -126,6 +131,10 @@ class StrumGenerateState extends MusicBeatState{
 
         boxes = new FlxTypedGroup<Dynamic>();
         infoTexts= new FlxTypedGroup<FlxText>();
+
+        var bg = new FlxSprite(0,0).loadGraphic(Paths.image("menuDesat"));
+        bg.color = FlxColor.ORANGE;
+        add(bg);
         super.create();
 
         makeEditor();
@@ -154,6 +163,7 @@ class StrumGenerateState extends MusicBeatState{
         scoreAddedBox.text = Std.string(strumFile.scoreAdded);
         strumNameBox.text = strumFile.strumName;
         mustHitCheck.checked = strumFile.mustHit;
+        soundVolumeSlider.value = strumFile.soundVolume;
     }
 
     function makeEditor(){
@@ -176,6 +186,11 @@ class StrumGenerateState extends MusicBeatState{
             {
                 strumFile.mustHit = mustHitCheck.checked;
             });
+
+        soundVolumeSlider = new FlxUISlider(this, "soundVolume", 400, 140, 0.0, 1.0, 150, null, 5, FlxColor.WHITE, FlxColor.BLACK);
+        soundVolumeSlider.setTexts("Volume of the sound Effect", true, "0", "1");
+
+
         saveButton = new FlxUIButton(30, 440, "Save", function() {
 			saveJsonFile();
 		}, true, false, FlxColor.WHITE);
@@ -201,6 +216,7 @@ class StrumGenerateState extends MusicBeatState{
         boxes.add(loadButton);
         boxes.add(noteKeyBox);
         boxes.add(mustHitCheck);
+        boxes.add(soundVolumeSlider);
 
         boxes.forEach(function (i:Dynamic){
 		    blockPressWhileTypingOn.push(i);
@@ -238,6 +254,8 @@ class StrumGenerateState extends MusicBeatState{
                 strumFile.strumName = strumNameBox.text.trim();
             } else if(sender == multipleKeysBox){
                 strumFile.multipleKeys = multipleKeysBox.text.trim();
+            } else if(sender == soundVolumeSlider){
+                strumFile.soundVolume = soundVolumeSlider.value;
             }
 		}
 	}
@@ -297,7 +315,8 @@ class StrumGenerateState extends MusicBeatState{
 			"scoreAdded": strumFile.scoreAdded,
 			"hideNote":	strumFile.hideNote,
             "strumName": strumFile.strumName,
-            "mustHit": strumFile.mustHit
+            "mustHit": strumFile.mustHit,
+            "soundVolume": strumFile.soundVolume
 		};
 
         var data:String = Json.stringify(json, "\t");

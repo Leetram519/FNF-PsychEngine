@@ -4725,6 +4725,11 @@ class PlayState extends MusicBeatState
 		if (Paths.formatToSongPath(SONG.song) != 'tutorial')
 			camZooming = true;
 
+		trace(note.noteData);
+		if(note.noteData >= 4){
+			FlxG.sound.play(Paths.sound(rhythmStrumList[note.noteData - 4 + playerRhythmStrumList.length].soundEffect), rhythmStrumList[note.noteData - 4 + playerRhythmStrumList.length].soundVolume);
+		}
+
 		if(note.noteType == 'Hey!' && dad.animOffsets.exists('hey')) {
 			dad.playAnim('hey', true);
 			dad.specialAnim = true;
@@ -4742,8 +4747,8 @@ class PlayState extends MusicBeatState
 			var char:Character = dad;
 			var animToPlay:String = singAnimations[Std.int(Math.abs(note.noteData))] + altAnim;
 
-			if(note.noteData >= 5){
-				animToPlay = enemyRhythmStrumList[Std.int(Math.abs(note.noteData)) - (4+playerRhythmStrumList.length)].animationToPlay;
+			if(note.noteData >= 4){
+				animToPlay = rhythmStrumList[Std.int(Math.abs(note.noteData)) - 4 + playerRhythmStrumList.length].animationToPlay;
 			}
 
 			if(note.gfNote) {
@@ -4783,9 +4788,8 @@ class PlayState extends MusicBeatState
 		{
 			if(cpuControlled && (note.ignoreNote || note.hitCausesMiss)) return;
 
-			if (ClientPrefs.hitsoundVolume > 0 && !note.hitsoundDisabled)
-			{
-				FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.hitsoundVolume);
+			if(note.noteData >= 4){
+				FlxG.sound.play(Paths.sound(playerRhythmStrumList[note.noteData - 4].soundEffect), playerRhythmStrumList[note.noteData - 4].soundVolume);
 			}
 
 			if(note.hitCausesMiss) {

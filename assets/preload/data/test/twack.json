@@ -1,12 +1,13 @@
 {
 	"animationToPlay": "singLEFT",
-	"hideNote": false,
+	"hideNote": true,
 	"multipleKeys": "",
-	"strumName": "one",
+	"strumName": "twack",
 	"mustHit": true,
+	"soundVolume": 0.7,
 	"soundEffect": "twack",
 	"noteKey": [
 		"BUTTON1"
 	],
-	"scoreAdded": 100
+	"scoreAdded": 1000
 }
