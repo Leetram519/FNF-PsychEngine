@@ -1,0 +1,13 @@
+{
+	"animationToPlay": "swing",
+	"hideNote": true,
+	"multipleKeys": "",
+	"strumName": "bfgolfhit",
+	"mustHit": true,
+	"soundVolume": 0.4,
+	"soundEffect": "twack",
+	"noteKey": [
+		"BUTTON1"
+	],
+	"scoreAdded": 9500
+}

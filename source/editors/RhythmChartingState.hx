@@ -2926,9 +2926,9 @@ class RhythmChartingState extends MusicBeatState
 						var gayPath = haxe.io.Path.join([("assets/data/"+_song.song+"/"), file]);
 		
 						try{
-							var rawJson:String = File.getContent(gayPath);
+							var jasonDerulo:String = File.getContent(gayPath);
 		
-							var loadedStrum:RhythmStrum = cast Json.parse(rawJson);
+							var loadedStrum:RhythmStrum = cast Json.parse(jasonDerulo);
 							if(loadedStrum.strumName != null && loadedStrum.noteKey != null){
 								trace("Successfully found Strum: " + loadedStrum.strumName);
 		

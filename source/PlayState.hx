@@ -2125,10 +2125,14 @@ class PlayState extends MusicBeatState
 			}
 
 			// It's gamer time
-			if (rhythmChart != null || rhythmChart.song != null || rhythmChart.rhythm == true){
+			try{
+				if (rhythmChart != null || rhythmChart.song != null || rhythmChart.rhythm == true){
 				
-				generateStaticArrows(0, true);
-				generateStaticArrows(1, true);
+					generateStaticArrows(0, true);
+					generateStaticArrows(1, true);
+				}
+			} catch(err){
+				trace("No rhythm chart, no worries then :)");
 			}
 
 			startedCountdown = true;
@@ -4253,7 +4257,12 @@ class PlayState extends MusicBeatState
 		note.ratingMod = daRating.ratingMod;
 		if(!note.ratingDisabled) daRating.increase();
 		note.rating = daRating.name;
+
 		score = daRating.score;
+
+		if(note.noteData > 3){
+			score = Std.int(rhythmStrumList[note.noteData - 4].scoreAdded * daRating.ratingMod);
+		}
 
 		if(daRating.noteSplash && !note.noteSplashDisabled)
 		{
@@ -4440,7 +4449,7 @@ class PlayState extends MusicBeatState
 				var lastTime:Float = Conductor.songPosition;
 				Conductor.songPosition = FlxG.sound.music.time;
 
-				var canMiss:Bool = !ClientPrefs.ghostTapping;
+				var canMiss:Bool = true;
 
 				// heavily based on my own code LOL if it aint broke dont fix it
 				var pressNotes:Array<Note> = [];
@@ -4597,7 +4606,7 @@ class PlayState extends MusicBeatState
 				}
 				#end
 			}
-			else if (boyfriend.animation.curAnim != null && boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
+			else if (boyfriend.animation.finished)
 			{
 				boyfriend.dance();
 				//boyfriend.animation.curAnim.finish();
@@ -4676,6 +4685,35 @@ class PlayState extends MusicBeatState
 
 	function noteMissPress(direction:Int = 1):Void //You pressed a key when there was no notes to press for this key
 	{
+		if(direction > 3){
+			health -= 0.05 * healthLoss;
+			if(instakillOnMiss)
+			{
+				vocals.volume = 0;
+				doDeathCheck(true);
+			}
+
+			if (combo > 5 && gf != null && gf.animOffsets.exists('sad'))
+			{
+				gf.playAnim('sad');
+			}
+			combo = 0;
+
+			if(!practiceMode) songScore -= 10;
+			if(!endingSong) {
+				songMisses++;
+			}
+			totalPlayed++;
+			RecalculateRating(true);
+
+			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+
+			if(boyfriend.hasMissAnimations) {
+				boyfriend.playAnim(rhythmStrumList[direction - 4].animationToPlay + 'miss', true);
+			}
+			vocals.volume = 0;
+		}
+
 		if(ClientPrefs.ghostTapping) return; //fuck it
 
 		if (!boyfriend.stunned)
@@ -4701,16 +4739,6 @@ class PlayState extends MusicBeatState
 			RecalculateRating(true);
 
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-			// FlxG.sound.play(Paths.sound('missnote1'), 1, false);
-			// FlxG.log.add('played imss note');
-
-			/*boyfriend.stunned = true;
-
-			// get stunned for 1/60 of a second, makes you able to
-			new FlxTimer().start(1 / 60, function(tmr:FlxTimer)
-			{
-				boyfriend.stunned = false;
-			});*/
 
 			if(boyfriend.hasMissAnimations) {
 				boyfriend.playAnim(singAnimations[Std.int(Math.abs(direction))] + 'miss', true);
@@ -4725,7 +4753,6 @@ class PlayState extends MusicBeatState
 		if (Paths.formatToSongPath(SONG.song) != 'tutorial')
 			camZooming = true;
 
-		trace(note.noteData);
 		if(note.noteData >= 4){
 			FlxG.sound.play(Paths.sound(rhythmStrumList[note.noteData - 4 + playerRhythmStrumList.length].soundEffect), rhythmStrumList[note.noteData - 4 + playerRhythmStrumList.length].soundVolume);
 		}
@@ -5179,11 +5206,11 @@ class PlayState extends MusicBeatState
 		{
 			gf.dance();
 		}
-		if (curBeat % boyfriend.danceEveryNumBeats == 0 && boyfriend.animation.curAnim != null && !boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.stunned)
+		if (curBeat % boyfriend.danceEveryNumBeats == 0 && boyfriend.animation.finished && !boyfriend.stunned)
 		{
 			boyfriend.dance();
 		}
-		if (curBeat % dad.danceEveryNumBeats == 0 && dad.animation.curAnim != null && !dad.animation.curAnim.name.startsWith('sing') && !dad.stunned)
+		if (curBeat % dad.danceEveryNumBeats == 0 && dad.animation.finished && !dad.stunned)
 		{
 			dad.dance();
 		}

@@ -1,0 +1,144 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "BFIDLE",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-2,
+				0
+			],
+			"anim": "singLEFT",
+			"fps": 24,
+			"name": "BFLEFT",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				29,
+				0
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "BFDOWN",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-3,
+				53
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "BFUP",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				29,
+				0
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "ikNode",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-2,
+				11
+			],
+			"anim": "singLEFTmiss",
+			"fps": 24,
+			"name": "BFLMISS",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-4,
+				9
+			],
+			"anim": "singDOWNmiss",
+			"fps": 24,
+			"name": "BFDMISS",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				2,
+				45
+			],
+			"anim": "singUPmiss",
+			"fps": 24,
+			"name": "BFUMISS",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				53,
+				2
+			],
+			"anim": "singRIGHTmiss",
+			"fps": 24,
+			"name": "BFRMISS",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				294,
+				142
+			],
+			"anim": "swing",
+			"fps": 24,
+			"name": "BFSWING inst",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				300,
+				90
+			],
+			"anim": "swingmiss",
+			"fps": 24,
+			"name": "BFSWINGMISS",
+			"indices": []
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/hole_in_one/hole in one",
+	"position": [
+		0,
+		170
+	],
+	"healthicon": "bf",
+	"flip_x": true,
+	"healthbar_colors": [
+		49,
+		176,
+		209
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 6.09999999999999,
+	"scale": 1
+}

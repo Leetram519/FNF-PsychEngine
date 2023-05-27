@@ -1,0 +1,100 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"anim": "idle",
+			"fps": 24,
+			"name": "monkeyidle",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				9,
+				2
+			],
+			"anim": "singDOWN",
+			"fps": 24,
+			"name": "mdown",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				8,
+				46
+			],
+			"anim": "singUP",
+			"fps": 24,
+			"name": "mup",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				78,
+				9
+			],
+			"anim": "singRIGHT",
+			"fps": 24,
+			"name": "mright",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-30,
+				-79
+			],
+			"anim": "throw",
+			"fps": 24,
+			"name": "bthrow",
+			"indices": []
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-3,
+				139
+			],
+			"anim": "throw2",
+			"fps": 24,
+			"name": "2bthrow",
+			"indices": []
+		},
+		{
+			"offsets": [
+				3,
+				5
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "singLEFT",
+			"loop": false,
+			"name": "mleft"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/hole_in_one/Monkey",
+	"position": [
+		0,
+		320
+	],
+	"healthicon": "bf",
+	"flip_x": false,
+	"healthbar_colors": [
+		49,
+		176,
+		209
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 6.09999999999999,
+	"scale": 1
+}

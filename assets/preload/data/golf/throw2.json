@@ -1,0 +1,13 @@
+{
+	"animationToPlay": "throw2",
+	"hideNote": true,
+	"multipleKeys": "",
+	"strumName": "throw2",
+	"mustHit": false,
+	"soundVolume": 0.4,
+	"soundEffect": "monkeythrow2",
+	"noteKey": [
+		"BUTTON1"
+	],
+	"scoreAdded": 9500
+}
